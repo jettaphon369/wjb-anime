@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WJB Anime</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">WJB</div>
+      <span>ANIME</span>
+    </div>
+
+    <nav class="side-nav">
+      <button class="nav-item active">🏠 หน้าแรก</button>
+      <button class="nav-item">🎬 อนิเมะทั้งหมด</button>
+      <button class="nav-item">📅 ตารางฉาย</button>
+      <button class="nav-item">🔥 มาแรง</button>
+      <button class="nav-item">⭐ ยอดนิยม</button>
+      <button class="nav-item">🔍 A-Z ค้นหา</button>
+      <button class="nav-item">♡ รายการโปรด</button>
+    </nav>
+
+    <div class="social-box">
+      <h4>ติดตามเรา</h4>
+      <div class="socials">
+        <span>f</span><span>▶</span><span>𝕏</span><span>💬</span>
+      </div>
+    </div>
+
+    <div class="promo">
+      <div class="wave">WJB</div>
+      <p>ดูอนิเมะออนไลน์ อัปเดตเร็วที่สุด</p>
+    </div>
+  </aside>
+
+  <main class="page">
+    <header class="topbar">
+      <nav class="top-menu">
+        <a class="active" href="#">หน้าแรก</a>
+        <a href="#">อนิเมะทั้งหมด</a>
+        <a href="#">ตารางฉาย</a>
+        <a href="#">อนิเมะมาแรง</a>
+        <a href="#">อนิเมะยอดนิยม</a>
+      </nav>
+
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="ค้นหาอนิเมะ..." />
+        <span>⌕</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">ตอนใหม่ล่าสุด</span>
+        <h1>ศึกสุดท้าย<br>ของผู้ถูกเลือก</h1>
+        <p>รวมอนิเมะคุณภาพ ระบบเลือกตอนและเลือกแหล่งดูได้ในเว็บเดียว</p>
+        <button onclick="openAnime('solo-leveling')" class="primary-btn">▶ ดูตอนล่าสุด</button>
+      </div>
+      <div class="hero-art">
+        <div class="moon"></div>
+        <div class="silhouette"></div>
+      </div>
+    </section>
+
+    <section class="content-block">
+      <div class="section-head">
+        <h2>🔥 อนิเมะมาแรง</h2>
+        <a href="#">ดูทั้งหมด</a>
+      </div>
+      <div id="trending" class="anime-row"></div>
+    </section>
+
+    <section class="content-block">
+      <div class="section-head">
+        <h2>🎬 ตอนล่าสุด</h2>
+        <a href="#">ดูทั้งหมด</a>
+      </div>
+      <div id="latest" class="anime-row"></div>
+    </section>
+
+    <section class="content-block">
+      <div class="section-head">
+        <h2>🧩 หมวดหมู่อนิเมะ</h2>
+        <a href="#">ดูทั้งหมด</a>
+      </div>
+      <div id="categories" class="category-row"></div>
+    </section>
+
+    <footer class="footer">
+      <strong>WJB</strong>
+      <span>สนุกบันเทิงหนัง ซีรีส์ และอนิเมะของคุณ</span>
+    </footer>
+  </main>
+
+  <aside class="rightbar">
+    <section class="panel">
+      <div class="panel-head">
+        <h3>ตารางอนิเมะวันนี้</h3>
+        <a href="#">ดูทั้งหมด</a>
+      </div>
+      <div id="schedule"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>TOP 10 ยอดนิยม</h3>
+        <a href="#">ดูทั้งหมด</a>
+      </div>
+      <div id="ranking"></div>
+    </section>
+  </aside>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

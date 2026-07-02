@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="watch-body">
+  <main class="watch-page">
+    <button class="back-btn" id="backBtn">← กลับ</button>
+
+    <section class="watch-layout">
+      <div class="watch-main">
+        <div class="watch-title">
+          <span id="animeBadge" class="badge">WJB</span>
+          <h1 id="watchTitle"></h1>
+          <p id="watchMeta"></p>
+        </div>
+
+        <div class="player-box">
+          <iframe id="player" allowfullscreen></iframe>
+        </div>
+
+        <div class="selector-card">
+          <h3>เลือกแหล่งดู</h3>
+          <div id="serverList" class="server-list"></div>
+        </div>
+      </div>
+
+      <aside class="episode-side">
+        <h3>รายการตอน</h3>
+        <div id="episodeList" class="episode-side-list"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="./data.js"></script>
+  <script src="./watch.js"></script>
+</body>
+</html>

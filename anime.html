@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Detail</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="detail-body">
+  <main class="detail-page">
+    <button class="back-btn" onclick="location.href='./index.html'">← กลับหน้าแรก</button>
+
+    <section id="detailHero" class="detail-hero"></section>
+
+    <section class="content-block">
+      <div class="section-head">
+        <h2>เลือกตอน</h2>
+        <span id="episodeCount"></span>
+      </div>
+      <div id="episodeList" class="episode-grid"></div>
+    </section>
+  </main>
+
+  <script src="./data.js"></script>
+  <script src="./anime.js"></script>
+</body>
+</html>
