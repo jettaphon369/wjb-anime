@@ -1,28 +1,35 @@
-const DB = {
-  "one-piece": {
+const data = [
+  {
+    id: 1,
     title: "One Piece",
-    eps: {
-      1: {
-        youtube: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server1: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server2: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    img: "https://via.placeholder.com/300x180",
+    eps: [
+      {
+        ep: 1,
+        servers: [
+          { name: "YouTube", url: "https://youtube.com" },
+          { name: "Server1", url: "https://example.com" }
+        ]
       },
-      2: {
-        youtube: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server1: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server2: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      {
+        ep: 2,
+        servers: [
+          { name: "YouTube", url: "https://youtube.com" }
+        ]
       }
-    }
+    ]
   },
-
-  "solo-leveling": {
+  {
+    id: 2,
     title: "Solo Leveling",
-    eps: {
-      1: {
-        youtube: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server1: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        server2: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    img: "https://via.placeholder.com/300x180",
+    eps: [
+      {
+        ep: 1,
+        servers: [
+          { name: "YouTube", url: "https://youtube.com" }
+        ]
       }
-    }
+    ]
   }
-};
+];
