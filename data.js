@@ -1,27 +1,21 @@
-const data = [
-  {
-    id: "1",
-    title: "Solo Leveling",
-    episodes: [
-      {
-        ep: 1,
-        servers: [
-          "https://www.youtube.com/embed/dQw4w9WgXcQ",
-          "https://www.youtube.com/embed/aqz-KE-bpKQ"
-        ]
-      }
-    ]
-  },
-  {
-    id: "2",
+const animeData = {
+  "one-piece": {
     title: "One Piece",
-    episodes: [
-      {
-        ep: 1,
-        servers: [
-          "https://www.youtube.com/embed/dQw4w9WgXcQ"
-        ]
+    eps: {
+      1: {
+        servers: {
+          youtube: "https://www.youtube.com/embed/VIDEO_ID_1",
+          server1: "https://example.com/video1.mp4",
+          server2: "https://example.com/video1-backup.mp4"
+        }
+      },
+      2: {
+        servers: {
+          youtube: "https://www.youtube.com/embed/VIDEO_ID_2",
+          server1: "https://example.com/video2.mp4",
+          server2: "https://example.com/video2-backup.mp4"
+        }
       }
-    ]
+    }
   }
-]
+};
