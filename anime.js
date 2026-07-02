@@ -1,78 +1,21 @@
-const params = new URLSearchParams(location.search);
-const id = params.get("id") || "solo-leveling";
+const id = new URLSearchParams(location.search).get("id") || "solo-leveling";
 const anime = DB[id];
 
-const detailHero = document.getElementById("detailHero");
-const episodeList = document.getElementById("episodeList");
-const episodeCount = document.getElementById("episodeCount");
-
-function favorites() {
-  return JSON.parse(localStorage.getItem("wjb_favorites") || "[]");
-}
-
-function toggleFavorite(id) {
-  const list = favorites();
-
-  const next = list.includes(id)
-    ? list.filter(x => x !== id)
-    : [...list, id];
-
-  localStorage.setItem("wjb_favorites", JSON.stringify(next));
-  location.reload();
-}
+const hero = document.getElementById("hero");
+const episodes = document.getElementById("episodes");
 
 if (!anime) {
-  document.body.innerHTML = `
-    <main class="detail-page">
-      <button class="back-btn" onclick="location.href='./index.html'">
-        ← กลับหน้าแรก
-      </button>
-      <h1>ไม่พบอนิเมะ</h1>
-    </main>
-  `;
+  hero.innerHTML = "<h1>ไม่พบข้อมูล</h1>";
 } else {
-  episodeCount.textContent = `${anime.episodes.length} ตอน`;
-
-  const isFav = favorites().includes(id);
-
-  detailHero.innerHTML = `
-    <div class="detail-copy">
-      <span class="badge">${anime.status}</span>
-
-      <h1>${anime.title}</h1>
-      <h2>${anime.thaiTitle}</h2>
-
-      <p>${anime.desc}</p>
-
-      <div class="detail-meta">
-        <span>★ ${anime.rating}</span>
-        ${anime.genre.map(g => `<span>${g}</span>`).join("")}
-      </div>
-
-      <button
-        class="primary-btn"
-        onclick="location.href='./watch.html?id=${id}&ep=${anime.episodes[0].ep}'"
-      >
-        ▶ ดูตอนล่าสุด
-      </button>
-
-      <button
-        class="ghost-btn"
-        onclick="toggleFavorite('${id}')"
-      >
-        ${isFav ? "♥ อยู่ในรายการโปรด" : "♡ เพิ่มรายการโปรด"}
-      </button>
-    </div>
-
-    <div class="detail-art poster-${anime.color}">
-      <div class="glow-orb"></div>
-    </div>
+  hero.innerHTML = `
+    <h1>${anime.title}</h1>
+    <p>${anime.thaiTitle}</p>
+    <p>${anime.desc}</p>
   `;
 
-  episodeList.innerHTML = anime.episodes.map(ep => `
-    <button onclick="location.href='./watch.html?id=${id}&ep=${ep.ep}'">
-      <b>EP ${ep.ep}</b>
-      <span>${ep.title}</span>
+  episodes.innerHTML = anime.episodes.map(ep => `
+    <button onclick="location.href='watch.html?id=${id}&ep=${ep.ep}'">
+      EP ${ep.ep} - ${ep.title}
     </button>
   `).join("");
 }
