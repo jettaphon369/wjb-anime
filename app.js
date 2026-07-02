@@ -13,26 +13,12 @@ function render(list) {
       <h3>${a.title}</h3>
     `;
 
-    div.onclick = () => openAnime(a);
+    div.onclick = () => {
+      alert("ไปหน้า anime detail: " + a.title);
+    };
 
     grid.appendChild(div);
   });
-}
-
-function openAnime(a) {
-  let html = `<h2>${a.title}</h2>`;
-
-  a.eps.forEach(ep => {
-    html += `<h4>EP ${ep.ep}</h4>`;
-
-    ep.servers.forEach(s => {
-      html += `<button onclick="window.open('${s.url}')">
-        ${s.name}
-      </button> `;
-    });
-  });
-
-  grid.innerHTML = html;
 }
 
 search.oninput = (e) => {
