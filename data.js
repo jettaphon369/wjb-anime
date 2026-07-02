@@ -32,7 +32,13 @@ const DB = {
        servers: [
   {
     name: "YouTube",
-    url: "https://www.youtube.com/embed/รหัสวิดีโอ"
+    type: "youtube",
+    url: "https://www.youtube.com/watch?v=VIDEO_ID"
+  },
+  {
+    name: "Server 1",
+    type: "mp4",
+    url: "https://yourdomain.com/video.mp4"
   }
 ]
 
