@@ -1,3 +1,28 @@
+function getEmbedUrl(server) {
+  const url = server.url;
+
+  // YouTube
+  if (server.type === "youtube") {
+    const id = url.includes("v=")
+      ? url.split("v=")[1]
+      : url.split("/").pop();
+
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  // Google Drive
+  if (server.type === "drive") {
+    const id = url.split("/d/")[1].split("/")[0];
+    return `https://drive.google.com/file/d/${id}/preview`;
+  }
+
+  // MP4 หรือ direct video
+  if (server.type === "mp4") {
+    return url;
+  }
+
+  return url;
+}
 const params = new URLSearchParams(location.search);
 const id = params.get("id") || "solo-leveling";
 let epNumber = Number(params.get("ep")) || null;
