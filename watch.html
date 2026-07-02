@@ -2,26 +2,22 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Watch Anime</title>
+<title>Watch</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 id="title">Anime</h1>
+<button onclick="history.back()">← กลับ</button>
 
-<!-- EP BUTTONS -->
-<div id="ep-list"></div>
+<h2 id="title"></h2>
 
-<!-- SERVER SELECT -->
-<div id="server-list"></div>
+<div id="ep"></div>
+<div id="server"></div>
 
-<!-- PLAYER -->
-<div class="player">
-  <iframe id="videoPlayer" width="100%" height="400" allowfullscreen></iframe>
-</div>
+<iframe id="player" width="100%" height="400" allowfullscreen></iframe>
 
 <script src="data.js"></script>
-<script src="script.js"></script>
+<script src="watch.js"></script>
 
 </body>
 </html>
