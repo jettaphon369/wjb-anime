@@ -8,42 +8,47 @@
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand">
+    <div class="brand" onclick="setFilter('all')">
       <div class="brand-mark">WJB</div>
       <span>ANIME</span>
     </div>
 
     <nav class="side-nav">
-      <button class="nav-item active">🏠 หน้าแรก</button>
-      <button class="nav-item">🎬 อนิเมะทั้งหมด</button>
-      <button class="nav-item">📅 ตารางฉาย</button>
-      <button class="nav-item">🔥 มาแรง</button>
-      <button class="nav-item">⭐ ยอดนิยม</button>
-      <button class="nav-item">🔍 A-Z ค้นหา</button>
-      <button class="nav-item">♡ รายการโปรด</button>
+      <button class="nav-item active" data-filter="all">🏠 หน้าแรก</button>
+      <button class="nav-item" data-filter="all">🎬 อนิเมะทั้งหมด</button>
+      <button class="nav-item" data-filter="schedule">📅 ตารางฉาย</button>
+      <button class="nav-item" data-filter="trending">🔥 มาแรง</button>
+      <button class="nav-item" data-filter="popular">⭐ ยอดนิยม</button>
+      <button class="nav-item" data-filter="az">🔎 A-Z ค้นหา</button>
+      <button class="nav-item" data-filter="favorites">♡ รายการโปรด</button>
     </nav>
 
     <div class="social-box">
       <h4>ติดตามเรา</h4>
       <div class="socials">
-        <span>f</span><span>▶</span><span>𝕏</span><span>💬</span>
+        <button onclick="openSocial('facebook')">f</button>
+        <button onclick="openSocial('youtube')">▶</button>
+        <button onclick="openSocial('discord')">💬</button>
+        <button onclick="openSocial('telegram')">✈</button>
       </div>
     </div>
 
     <div class="promo">
       <div class="wave">WJB</div>
       <p>ดูอนิเมะออนไลน์ อัปเดตเร็วที่สุด</p>
+      <button onclick="setFilter('popular')">ดูยอดนิยม</button>
     </div>
   </aside>
 
   <main class="page">
     <header class="topbar">
       <nav class="top-menu">
-        <a class="active" href="#">หน้าแรก</a>
-        <a href="#">อนิเมะทั้งหมด</a>
-        <a href="#">ตารางฉาย</a>
-        <a href="#">อนิเมะมาแรง</a>
-        <a href="#">อนิเมะยอดนิยม</a>
+        <a class="active" href="#" data-filter="all">หน้าแรก</a>
+        <a href="#" data-filter="all">อนิเมะทั้งหมด</a>
+        <a href="#" data-filter="schedule">ตารางฉาย</a>
+        <a href="#" data-filter="trending">อนิเมะมาแรง</a>
+        <a href="#" data-filter="popular">อนิเมะยอดนิยม</a>
+        <a href="#" data-filter="az">A-Z</a>
       </nav>
 
       <div class="search-wrap">
@@ -57,7 +62,7 @@
         <span class="eyebrow">ตอนใหม่ล่าสุด</span>
         <h1>ศึกสุดท้าย<br>ของผู้ถูกเลือก</h1>
         <p>รวมอนิเมะคุณภาพ ระบบเลือกตอนและเลือกแหล่งดูได้ในเว็บเดียว</p>
-        <button onclick="openAnime('solo-leveling')" class="primary-btn">▶ ดูตอนล่าสุด</button>
+        <button onclick="openWatch('solo-leveling')" class="primary-btn">▶ ดูตอนล่าสุด</button>
       </div>
       <div class="hero-art">
         <div class="moon"></div>
@@ -65,18 +70,18 @@
       </div>
     </section>
 
-    <section class="content-block">
+    <section id="mainListBlock" class="content-block">
       <div class="section-head">
-        <h2>🔥 อนิเมะมาแรง</h2>
-        <a href="#">ดูทั้งหมด</a>
+        <h2 id="mainTitle">🔥 อนิเมะมาแรง</h2>
+        <button class="text-btn" onclick="setFilter('all')">ดูทั้งหมด</button>
       </div>
-      <div id="trending" class="anime-row"></div>
+      <div id="mainList" class="anime-row"></div>
     </section>
 
     <section class="content-block">
       <div class="section-head">
         <h2>🎬 ตอนล่าสุด</h2>
-        <a href="#">ดูทั้งหมด</a>
+        <button class="text-btn" onclick="setFilter('latest')">ดูทั้งหมด</button>
       </div>
       <div id="latest" class="anime-row"></div>
     </section>
@@ -84,7 +89,7 @@
     <section class="content-block">
       <div class="section-head">
         <h2>🧩 หมวดหมู่อนิเมะ</h2>
-        <a href="#">ดูทั้งหมด</a>
+        <button class="text-btn" onclick="setFilter('all')">ทุกหมวด</button>
       </div>
       <div id="categories" class="category-row"></div>
     </section>
@@ -99,7 +104,7 @@
     <section class="panel">
       <div class="panel-head">
         <h3>ตารางอนิเมะวันนี้</h3>
-        <a href="#">ดูทั้งหมด</a>
+        <button class="text-btn" onclick="setFilter('schedule')">ดูทั้งหมด</button>
       </div>
       <div id="schedule"></div>
     </section>
@@ -107,7 +112,7 @@
     <section class="panel">
       <div class="panel-head">
         <h3>TOP 10 ยอดนิยม</h3>
-        <a href="#">ดูทั้งหมด</a>
+        <button class="text-btn" onclick="setFilter('popular')">ดูทั้งหมด</button>
       </div>
       <div id="ranking"></div>
     </section>
