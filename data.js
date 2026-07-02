@@ -29,15 +29,12 @@ const DB = {
       {
         ep: 11,
         title: "เงาแห่งพลังใหม่",
-        servers: [
-          {
-            name: "YouTube",
-            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-          }
-        ]
-      }
-    ]
-  },
+       servers: [
+  {
+    name: "YouTube",
+    url: "https://www.youtube.com/embed/รหัสวิดีโอ"
+  }
+]
 
   "one-piece": {
     title: "One Piece",
