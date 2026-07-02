@@ -1,14 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WJB Anime</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<h1>WJB Anime</h1>
-<div id="list"></div>
+
+<div class="topbar">
+  <h1>WJB Anime</h1>
+  <input id="search" placeholder="ค้นหาอนิเมะ...">
+</div>
+
+<div class="grid" id="grid"></div>
+
 <script src="data.js"></script>
-<script src="script.js"></script>
+<script>
+const grid = document.getElementById("grid")
+
+function render(list){
+  grid.innerHTML = ""
+
+  list.forEach(a=>{
+    const div = document.createElement("div")
+    div.className = "card"
+
+    div.innerHTML = `
+      <div class="poster"></div>
+      <h3>${a.title}</h3>
+    `
+
+    div.onclick = ()=>{
+      location.href = "watch.html?id="+a.id
+    }
+
+    grid.appendChild(div)
+  })
+}
+
+render(data)
+
+document.getElementById("search").oninput = (e)=>{
+  const v = e.target.value.toLowerCase()
+  render(data.filter(a=>a.title.toLowerCase().includes(v)))
+}
+</script>
+
 </body>
 </html>
