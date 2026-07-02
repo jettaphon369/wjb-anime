@@ -1,186 +1,63 @@
-function getEmbedUrl(server) {
-  const url = server.url;
-
-  // YouTube
-  if (server.type === "youtube") {
-    const id = url.includes("v=")
-      ? url.split("v=")[1]
-      : url.split("/").pop();
-
-    return `https://www.youtube.com/embed/${id}`;
-  }
-
-  // Google Drive
-  if (server.type === "drive") {
-    const id = url.split("/d/")[1].split("/")[0];
-    return `https://drive.google.com/file/d/${id}/preview`;
-  }
-
-  // MP4 หรือ direct video
-  if (server.type === "mp4") {
-    return url;
-  }
-
-  return url;
-}
 const params = new URLSearchParams(location.search);
-const id = params.get("id") || "solo-leveling";
-let epNumber = Number(params.get("ep")) || null;
+const id = params.get("id");
+let epNumber = Number(params.get("ep"));
 
 const anime = DB[id];
 
+const title = document.getElementById("title");
 const player = document.getElementById("player");
-const watchTitle = document.getElementById("watchTitle");
-const watchMeta = document.getElementById("watchMeta");
-const serverList = document.getElementById("serverList");
-const episodeList = document.getElementById("episodeList");
-const backBtn = document.getElementById("backBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const favBtn = document.getElementById("favBtn");
+const servers = document.getElementById("servers");
+const episodes = document.getElementById("episodes");
 
-backBtn.onclick = () => {
-  location.href = `./anime.html?id=${id}`;
-};
+function getEmbed(server) {
+  if (server.type === "youtube") {
+    const id = server.url.split("v=")[1];
+    return `https://www.youtube.com/embed/${id}`;
+  }
 
-function favorites() {
-  return JSON.parse(localStorage.getItem("wjb_favorites") || "[]");
-}
-
-function toggleFavorite(id) {
-  const list = favorites();
-
-  const next = list.includes(id)
-    ? list.filter(x => x !== id)
-    : [...list, id];
-
-  localStorage.setItem("wjb_favorites", JSON.stringify(next));
-  updateFavButton();
-}
-
-function updateFavButton() {
-  favBtn.textContent = favorites().includes(id)
-    ? "♥ อยู่ในรายการโปรด"
-    : "♡ เพิ่มรายการโปรด";
+  return server.url;
 }
 
 if (!anime) {
-  document.body.innerHTML = `
-    <main class="watch-page">
-      <button class="back-btn" onclick="location.href='./index.html'">
-        ← กลับหน้าแรก
-      </button>
-      <h1>ไม่พบอนิเมะ</h1>
-    </main>
-  `;
+  title.innerHTML = "ไม่พบอนิเมะ";
 } else {
-  if (!epNumber) {
-    epNumber = anime.episodes[0].ep;
-  }
+  if (!epNumber) epNumber = anime.episodes[0].ep;
 
-  favBtn.onclick = () => toggleFavorite(id);
-
-  renderWatch();
-  updateFavButton();
+  render();
 }
 
-function currentEpisode() {
-  return anime.episodes.find(e => Number(e.ep) === Number(epNumber))
-    || anime.episodes[0];
+function currentEp() {
+  return anime.episodes.find(e => e.ep === epNumber);
 }
 
-function currentIndex() {
-  return anime.episodes.findIndex(e => Number(e.ep) === Number(epNumber));
-}
+function render() {
+  const ep = currentEp();
 
-function renderWatch() {
-  const ep = currentEpisode();
+  title.innerHTML = `${anime.title} - EP ${ep.ep}`;
 
-  localStorage.setItem(
-    "wjb_continue",
-    JSON.stringify({
-      id,
-      ep: ep.ep,
-      title: anime.title
-    })
-  );
+  player.innerHTML = `
+    <iframe width="100%" height="400" src="${getEmbed(ep.servers[0])}" frameborder="0" allowfullscreen></iframe>
+  `;
 
-  watchTitle.textContent = `${anime.title} - EP ${ep.ep}`;
-  watchMeta.textContent = ep.title;
-
-  episodeList.innerHTML = anime.episodes.map(item => `
-    <button
-      class="${Number(item.ep) === Number(ep.ep) ? "active" : ""}"
-      onclick="changeEp(${item.ep})"
-    >
-      <b>EP ${item.ep}</b>
-      <span>${item.title}</span>
+  servers.innerHTML = ep.servers.map(s => `
+    <button onclick='playServer(${JSON.stringify(s)})'>
+      ${s.name}
     </button>
   `).join("");
 
-  serverList.innerHTML = ep.servers.map((server, index) => `
-    <button
-      class="${index === 0 ? "active" : ""}"
-      onclick="playServer('${encodeURIComponent(server.url)}', this)"
-    >
-      ${server.name}
+  episodes.innerHTML = anime.episodes.map(e => `
+    <button onclick="changeEp(${e.ep})">
+      EP ${e.ep}
     </button>
   `).join("");
-
-  play(ep.servers[0].url);
-  updateNextPrev();
 }
 
-function updateNextPrev() {
-  const idx = currentIndex();
-
-  prevBtn.disabled = idx <= 0;
-  nextBtn.disabled = idx >= anime.episodes.length - 1;
-
-  prevBtn.onclick = () => {
-    if (idx > 0) {
-      changeEp(anime.episodes[idx - 1].ep);
-    }
-  };
-
-  nextBtn.onclick = () => {
-    if (idx < anime.episodes.length - 1) {
-      changeEp(anime.episodes[idx + 1].ep);
-    }
-  };
+function playServer(server) {
+  player.innerHTML = `
+    <iframe width="100%" height="400" src="${getEmbed(server)}" frameborder="0" allowfullscreen></iframe>
+  `;
 }
 
-function changeEp(nextEp) {
-  epNumber = nextEp;
-
-  const url = new URL(location.href);
-  url.searchParams.set("ep", nextEp);
-  history.replaceState(null, "", url);
-
-  renderWatch();
-}
-
-function playServer(encodedUrl, btn) {
-  document.querySelectorAll(".server-list button").forEach(b => {
-    b.classList.remove("active");
-  });
-
-  btn.classList.add("active");
-
-  play(decodeURIComponent(encodedUrl));
-}
-
-function play(server) {
-  const src = getEmbedUrl(server);
-
-  // MP4 ใช้ video tag (fallback iframe)
-  if (server.type === "mp4") {
-    player.outerHTML = `
-      <video id="player" controls autoplay style="width:100%;border-radius:12px;">
-        <source src="${src}" type="video/mp4">
-      </video>
-    `;
-  } else {
-    document.getElementById("player").src = src;
-  }
+function changeEp(ep) {
+  location.href = `watch.html?id=${id}&ep=${ep}`;
 }
