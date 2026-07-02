@@ -1,17 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Watch</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<h1>Watch</h1>
-<div id="player">VIDEO PLAYER</div>
+
+<div class="watch">
+  <button onclick="history.back()">⬅ กลับ</button>
+
+  <h1 id="title"></h1>
+
+  <div class="player">
+    <iframe id="frame" allowfullscreen></iframe>
+  </div>
+
+  <div class="eps" id="eps"></div>
+</div>
+
+<script src="data.js"></script>
+
 <script>
-const p = new URLSearchParams(location.search);
-document.body.insertAdjacentHTML("beforeend",
-`<p>Anime ${p.get("id")} EP ${p.get("ep")}</p>`);
+const id = new URLSearchParams(location.search).get("id")
+const anime = data.find(x=>x.id==id)
+
+document.getElementById("title").innerText = anime.title
+
+const frame = document.getElementById("frame")
+const eps = document.getElementById("eps")
+
+function play(url){
+  frame.src = url
+}
+
+anime.episodes.forEach((ep,i)=>{
+  const b = document.createElement("button")
+  b.innerText = "EP " + (i+1)
+  b.onclick = ()=> play(ep)
+  eps.appendChild(b)
+})
+
+play(anime.episodes[0])
 </script>
+
 </body>
 </html>
