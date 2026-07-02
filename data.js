@@ -2,34 +2,16 @@ const data = [
   {
     id: 1,
     title: "One Piece",
-    img: "https://via.placeholder.com/300x180",
-    eps: [
-      {
-        ep: 1,
-        servers: [
-          { name: "YouTube", url: "https://youtube.com" },
-          { name: "Server1", url: "https://example.com" }
-        ]
-      },
-      {
-        ep: 2,
-        servers: [
-          { name: "YouTube", url: "https://youtube.com" }
-        ]
-      }
-    ]
+    img: "https://picsum.photos/300/180?1",
   },
   {
     id: 2,
     title: "Solo Leveling",
-    img: "https://via.placeholder.com/300x180",
-    eps: [
-      {
-        ep: 1,
-        servers: [
-          { name: "YouTube", url: "https://youtube.com" }
-        ]
-      }
-    ]
+    img: "https://picsum.photos/300/180?2",
+  },
+  {
+    id: 3,
+    title: "Attack on Titan",
+    img: "https://picsum.photos/300/180?3",
   }
 ];
