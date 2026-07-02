@@ -51,18 +51,12 @@ const DB = {
       {
         ep: 1085,
         title: "เส้นทางสู่เกาะสุดท้าย",
-        servers: [
-          {
-            name: "YouTube",
-            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-          },
-          {
-            name: "Server 1",
-            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-          }
-        ]
-      },
-      {
+       servers: [
+  {
+    name: "YouTube",
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+]
         ep: 1084,
         title: "คำสัญญาแห่งทะเล",
         servers: [
