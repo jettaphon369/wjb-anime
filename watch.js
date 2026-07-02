@@ -170,6 +170,17 @@ function playServer(encodedUrl, btn) {
   play(decodeURIComponent(encodedUrl));
 }
 
-function play(url) {
-  player.src = url;
+function play(server) {
+  const src = getEmbedUrl(server);
+
+  // MP4 ใช้ video tag (fallback iframe)
+  if (server.type === "mp4") {
+    player.outerHTML = `
+      <video id="player" controls autoplay style="width:100%;border-radius:12px;">
+        <source src="${src}" type="video/mp4">
+      </video>
+    `;
+  } else {
+    document.getElementById("player").src = src;
+  }
 }
