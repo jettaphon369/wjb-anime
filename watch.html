@@ -1,47 +1,21 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
   <title>Watch</title>
-  <link rel="stylesheet" href="./style.css" />
 </head>
-<body class="watch-body">
-  <main class="watch-page">
-    <button class="back-btn" id="backBtn">
-      ← กลับ
-    </button>
+<body>
 
-    <section class="watch-layout">
-      <div class="watch-main">
-        <div class="watch-title">
-          <span id="animeBadge" class="badge">WJB</span>
-          <h1 id="watchTitle"></h1>
-          <p id="watchMeta"></p>
-        </div>
+  <button onclick="history.back()">← กลับ</button>
 
-        <div class="player-box">
-          <iframe id="player" allowfullscreen></iframe>
-        </div>
+  <h1 id="title"></h1>
 
-        <div class="watch-actions">
-          <button id="prevBtn">⏮ ตอนก่อนหน้า</button>
-          <button id="nextBtn">ตอนถัดไป ⏭</button>
-          <button id="favBtn">♡ เพิ่มรายการโปรด</button>
-        </div>
+  <div id="player"></div>
 
-        <div class="selector-card">
-          <h3>เลือกแหล่งดู</h3>
-          <div id="serverList" class="server-list"></div>
-        </div>
-      </div>
-
-      <aside class="episode-side">
-        <h3>รายการตอน</h3>
-        <div id="episodeList" class="episode-side-list"></div>
-      </aside>
-    </section>
-  </main>
+  <div id="servers"></div>
+  <div id="episodes"></div>
 
   <script src="./data.js"></script>
   <script src="./watch.js"></script>
