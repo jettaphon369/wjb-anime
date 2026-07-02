@@ -12,16 +12,28 @@ const DB = {
         ep: 12,
         title: "ศึกสุดท้ายของผู้ถูกเลือก",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-          { name: "Server 1", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-          { name: "Server 2", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          },
+          {
+            name: "Server 1",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          },
+          {
+            name: "Server 2",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       },
       {
         ep: 11,
         title: "เงาแห่งพลังใหม่",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       }
     ]
@@ -40,15 +52,24 @@ const DB = {
         ep: 1085,
         title: "เส้นทางสู่เกาะสุดท้าย",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-          { name: "Server 1", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          },
+          {
+            name: "Server 1",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       },
       {
         ep: 1084,
         title: "คำสัญญาแห่งทะเล",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       }
     ]
@@ -67,7 +88,10 @@ const DB = {
         ep: 11,
         title: "เปลวเพลิงแห่งการต่อสู้",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       }
     ]
@@ -86,7 +110,10 @@ const DB = {
         ep: 23,
         title: "คำสาปที่ไม่สิ้นสุด",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       }
     ]
@@ -105,19 +132,83 @@ const DB = {
         ep: 25,
         title: "วงล้อแห่งโชคชะตา",
         servers: [
-          { name: "YouTube", type: "embed", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
+        ]
+      }
+    ]
+  },
+
+  "slime": {
+    title: "That Time I Got Reincarnated as a Slime",
+    thaiTitle: "เกิดใหม่ทั้งทีก็เป็นสไลม์ไปแล้ว",
+    status: "ใหม่",
+    rating: "9.3",
+    genre: ["ต่างโลก", "แฟนตาซี"],
+    color: "cyan",
+    desc: "เรื่องราวต่างโลกของสไลม์ที่สร้างเมืองของตัวเอง",
+    episodes: [
+      {
+        ep: 24,
+        title: "เมืองใหม่และสัญญาใหม่",
+        servers: [
+          {
+            name: "YouTube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
         ]
       }
     ]
   }
 };
 
-const CATEGORIES = ["แอ็กชัน", "ต่างโลก", "แฟนตาซี", "ผจญภัย", "โรแมนติก", "คอมเมดี้", "ดราม่า", "ทุกหมวดหมู่"];
+const CATEGORIES = [
+  "แอ็กชัน",
+  "ต่างโลก",
+  "แฟนตาซี",
+  "ผจญภัย",
+  "โรแมนติก",
+  "คอมเมดี้",
+  "ดราม่า",
+  "ทุกหมวดหมู่"
+];
 
 const SCHEDULE = [
-  { day: "จันทร์", time: "20:00", title: "เกิดใหม่ทั้งทีก็เป็นสไลม์ไปแล้ว", ep: "24" },
-  { day: "อังคาร", time: "19:30", title: "ดาบพิฆาตอสูร", ep: "11" },
-  { day: "พุธ", time: "20:30", title: "มหาเวทย์ผนึกมาร", ep: "23" },
-  { day: "ศุกร์", time: "20:00", title: "Solo Leveling", ep: "12" },
-  { day: "อาทิตย์", time: "19:30", title: "Re:Zero", ep: "25" }
+  {
+    id: "slime",
+    day: "จันทร์",
+    time: "20:00",
+    title: "เกิดใหม่ทั้งทีก็เป็นสไลม์ไปแล้ว",
+    ep: "24"
+  },
+  {
+    id: "demon-slayer",
+    day: "อังคาร",
+    time: "19:30",
+    title: "ดาบพิฆาตอสูร",
+    ep: "11"
+  },
+  {
+    id: "jujutsu",
+    day: "พุธ",
+    time: "20:30",
+    title: "มหาเวทย์ผนึกมาร",
+    ep: "23"
+  },
+  {
+    id: "solo-leveling",
+    day: "ศุกร์",
+    time: "20:00",
+    title: "Solo Leveling",
+    ep: "12"
+  },
+  {
+    id: "re-zero",
+    day: "อาทิตย์",
+    time: "19:30",
+    title: "Re:Zero",
+    ep: "25"
+  }
 ];
