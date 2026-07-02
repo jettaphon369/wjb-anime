@@ -18,32 +18,36 @@
     <iframe id="frame" allowfullscreen></iframe>
   </div>
 
-  <div class="eps" id="eps"></div>
+  <div id="servers"></div>
 </div>
 
 <script src="data.js"></script>
 
 <script>
 const id = new URLSearchParams(location.search).get("id")
-const anime = data.find(x=>x.id==id)
+const anime = data.find(x => x.id == id)
 
 document.getElementById("title").innerText = anime.title
 
 const frame = document.getElementById("frame")
-const eps = document.getElementById("eps")
+const servers = document.getElementById("servers")
 
 function play(url){
   frame.src = url
 }
 
-anime.episodes.forEach((ep,i)=>{
-  const b = document.createElement("button")
-  b.innerText = "EP " + (i+1)
-  b.onclick = ()=> play(ep)
-  eps.appendChild(b)
-})
+const ep = anime.episodes[0]
 
-play(anime.episodes[0])
+// default play server 1
+play(ep.servers[0])
+
+// build server buttons
+ep.servers.forEach((s, i) => {
+  const btn = document.createElement("button")
+  btn.innerText = "Server " + (i+1)
+  btn.onclick = () => play(s)
+  servers.appendChild(btn)
+})
 </script>
 
 </body>
