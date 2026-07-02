@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Watch</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Watch</h1>
+<div id="player">VIDEO PLAYER</div>
+<script>
+const p = new URLSearchParams(location.search);
+document.body.insertAdjacentHTML("beforeend",
+`<p>Anime ${p.get("id")} EP ${p.get("ep")}</p>`);
+</script>
+</body>
+</html>

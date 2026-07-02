@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Anime</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1 id="title"></h1>
+<div id="eps"></div>
+<script src="data.js"></script>
+<script>
+const id = new URLSearchParams(location.search).get("id");
+const anime = data.find(a=>a.id==id);
+document.getElementById("title").innerText = anime.title;
+document.getElementById("eps").innerHTML = anime.eps.map(e=>
+`<a href='watch.html?id=${id}&ep=${e}'>EP ${e}</a>`
+).join("<br>");
+</script>
+</body>
+</html>
