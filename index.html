@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#07131d" />
+  <title>WJB: Kingdom Defense</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="home" class="screen active">
+      <div class="home-art"></div>
+      <div class="home-overlay"></div>
+      <div class="home-content">
+        <div class="brand-mark">WJB</div>
+        <h1>Kingdom Defense</h1>
+        <p>รวมเหล่าฮีโร่ ป้องกันประตูอาณาจักรจากกองทัพเงามืด</p>
+        <button id="playBtn" class="primary">เริ่มเล่น</button>
+        <button id="howBtn" class="secondary">วิธีเล่น</button>
+        <small>ต้นแบบเกมเว็บ • รองรับมือถือ • ไม่ต้องติดตั้ง</small>
+      </div>
+    </section>
+
+    <section id="game" class="screen">
+      <header class="hud">
+        <button id="backBtn" class="icon-btn" aria-label="กลับ">←</button>
+        <div class="stage"><b>ด่าน 1-1</b><span id="waveText">เตรียมพร้อม</span></div>
+        <div class="resource"><span class="gem">✦</span><b id="energy">200</b></div>
+        <button id="pauseBtn" class="icon-btn" aria-label="หยุดเกม">Ⅱ</button>
+      </header>
+
+      <div class="game-shell">
+        <aside class="cards" id="cards"></aside>
+        <main class="battle-wrap">
+          <div class="gate-hp"><span>ประตูอาณาจักร</span><div><i id="gateBar"></i></div></div>
+          <canvas id="battle" width="1170" height="650"></canvas>
+          <div id="message" class="message">เลือกฮีโร่ แล้วแตะช่องเพื่อวาง</div>
+        </main>
+      </div>
+
+      <footer class="bottom-bar">
+        <button id="startWave" class="start-wave">เริ่มการโจมตี</button>
+        <div class="speed">ความเร็ว <button id="speedBtn">×1</button></div>
+      </footer>
+    </section>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-card">
+        <button id="closeModal" class="close">×</button>
+        <h2 id="modalTitle">วิธีเล่น</h2>
+        <div id="modalBody"></div>
+        <button id="modalAction" class="primary">เข้าใจแล้ว</button>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
