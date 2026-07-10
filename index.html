@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>WJB — 3D Fantasy RPG</title>
+  <meta name="theme-color" content="#071014" />
+  <meta name="description" content="WJB 3D Fantasy RPG — เกมเว็บสามมิติสำหรับมือถือและคอมพิวเตอร์" />
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <section id="home" class="screen active">
+      <canvas id="homeCanvas"></canvas>
+      <div class="overlay"></div>
+      <div class="brand">
+        <div class="eyebrow">WJB 3D WEB GAME</div>
+        <h1>WJB<br><span>FANTASY RPG</span></h1>
+        <p>รวมทีมฮีโร่ • สำรวจโลกแฟนตาซี • ต่อสู้แบบเรียลไทม์</p>
+        <button id="startBtn" class="primary">เริ่มเกม</button>
+        <button id="rosterBtn" class="ghost">ดูตัวละคร</button>
+      </div>
+      <div class="hint">ลากเพื่อหมุน • เลื่อนเพื่อซูม</div>
+    </section>
+
+    <section id="roster" class="screen">
+      <header class="topbar">
+        <button class="backBtn">← กลับ</button>
+        <div><b>ตัวละคร</b><small>เลือกฮีโร่เพื่อดูโมเดล 3D</small></div>
+        <button id="playSelected" class="mini">เล่นตัวนี้</button>
+      </header>
+      <div class="rosterLayout">
+        <aside id="characterList"></aside>
+        <main class="viewer">
+          <canvas id="viewerCanvas"></canvas>
+          <div class="characterInfo">
+            <h2 id="charName"></h2>
+            <p id="charRole"></p>
+            <div id="stats"></div>
+          </div>
+          <div class="controls">หมุน: ลากเมาส์/นิ้ว • ซูม: เลื่อน/บีบนิ้ว</div>
+        </main>
+      </div>
+    </section>
+
+    <section id="battle" class="screen">
+      <canvas id="battleCanvas"></canvas>
+      <div class="battleHud">
+        <div class="playerCard">
+          <span id="battleName">ฮีโร่</span>
+          <div class="bar"><i id="hpBar"></i></div>
+        </div>
+        <div class="enemyCard"><span>โกเลมหิน</span><div class="bar enemy"><i id="enemyHp"></i></div></div>
+      </div>
+      <div class="battleControls">
+        <button id="attackBtn">⚔️ โจมตี</button>
+        <button id="skillBtn">✨ สกิล</button>
+        <button id="backHomeBtn">⌂ หน้าแรก</button>
+      </div>
+      <div id="message" class="message">แตะปุ่มเพื่อโจมตี</div>
+    </section>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
