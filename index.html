@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Pet House Defense Engine 3</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#8edcff;color:#fff}
+#game{position:fixed;inset:0}
+#ui{position:fixed;inset:0;pointer-events:none}
+.panel{position:absolute;background:rgba(28,34,39,.9);border:2px solid #fff;border-radius:20px;box-shadow:6px 7px 0 rgba(20,33,42,.7);padding:14px;pointer-events:auto}
+#stats{left:14px;top:14px;width:280px}
+#stats h2{margin:0 0 12px;color:#ffe06a}
+.row{display:flex;justify-content:space-between;margin:9px 0;font-weight:bold}
+#tools{right:14px;top:14px;display:grid;grid-template-columns:repeat(3,54px);gap:8px}
+.tool{width:54px;height:54px;border-radius:50%;border:2px solid white;background:#2d3439;color:white;font-size:25px;box-shadow:0 4px 0 #111;pointer-events:auto}
+#bottom{left:50%;bottom:14px;transform:translateX(-50%);width:min(92vw,720px);display:flex;gap:8px;align-items:center;padding:10px}
+.card{flex:1;min-width:110px;height:116px;border-radius:16px;border:2px solid #fff;background:linear-gradient(#30363d,#171b1f);color:white;pointer-events:auto;position:relative;overflow:hidden}
+.card.active{outline:4px solid #ffd84f}
+.card .emoji{font-size:36px;margin-top:8px}
+.card .name{font-weight:bold}
+.card .cost{position:absolute;bottom:0;left:0;right:0;background:#222;padding:6px}
+#hint{position:absolute;left:50%;top:16px;transform:translateX(-50%);background:#0008;border-radius:999px;padding:8px 14px;font-weight:bold}
+#battleBtn{position:absolute;right:18px;bottom:150px;border:0;border-radius:18px;background:linear-gradient(#ffdc5e,#d28a22);color:#3b2309;font-weight:bold;font-size:19px;padding:14px 20px;box-shadow:0 6px 0 #7a4418;pointer-events:auto}
+#toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#000b;border:2px solid #fff;border-radius:20px;padding:20px 26px;font-size:22px;font-weight:bold;display:none}
+@media(max-width:700px){
+ #stats{width:235px;transform:scale(.86);transform-origin:top left}
+ #tools{transform:scale(.83);transform-origin:top right}
+ #bottom{overflow-x:auto;justify-content:flex-start}
+ .card{min-width:105px}
+ #hint{display:none}
+}
+</style>
+</head>
+<body>
+<div id="game"></div>
+<div id="ui">
+  <div id="hint">ลากเพื่อหมุน • ใช้สองนิ้วเพื่อซูม • แตะพื้นเพื่อวางตัวละคร</div>
+  <div id="stats" class="panel">
+    <h2>🐾 Pet House Defense</h2>
+    <div class="row"><span>🪙 เหรียญ</span><b id="coins">150</b></div>
+    <div class="row"><span>☀️ พลังงาน</span><b id="energy">160</b></div>
+    <div class="row"><span>🏝️ เกาะ</span><b>1</b></div>
+    <div class="row"><span>⭐ เลเวล</span><b>1</b></div>
+  </div>
+  <div id="tools">
+    <button class="tool" onclick="resetView()">🏠</button>
+    <button class="tool" onclick="toggleDay()">🌗</button>
+    <button class="tool" onclick="toggleRain()">🌧️</button>
+    <button class="tool" onclick="zoomIn()">＋</button>
+    <button class="tool" onclick="zoomOut()">－</button>
+    <button class="tool" onclick="toggleAutoRotate()">👁️</button>
+  </div>
+  <button id="battleBtn" onclick="startBattle()">⚔️ เริ่มด่าน</button>
+  <div id="bottom" class="panel"></div>
+  <div id="toast"></div>
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+const heroes=[
+ {id:'brisky',name:'BRISKY',emoji:'🐶',cost:40,color:0xc77b3b,type:'dog'},
+ {id:'mio',name:'MIO',emoji:'🐱',cost:50,color:0x4964d8,type:'cat'},
+ {id:'gabby',name:'GABBY',emoji:'🦆',cost:60,color:0xffd64a,type:'duck'},
+ {id:'wind',name:'WIND',emoji:'🏹',cost:60,color:0x36a65a,type:'archer'},
+ {id:'titan',name:'TITAN',emoji:'🛡️',cost:70,color:0x2e73d9,type:'knight'},
+ {id:'rian',name:'RIAN',emoji:'⚔️',cost:90,color:0xffb02e,type:'boy'},
+ {id:'kaisen',name:'KAISEN',emoji:'🗡️',cost:120,color:0x1d8b48,type:'sword'}
+];
+let selected='brisky', energy=160, coins=150, night=false, raining=false, autoRotate=false;
+const placed=[];
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x9fe5ff);
+scene.fog=new THREE.Fog(0x9fe5ff,24,70);
+
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,150);
+camera.position.set(12,11,16);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+game.appendChild(renderer.domElement);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=.07;
+controls.minDistance=8;
+controls.maxDistance=32;
+controls.maxPolarAngle=Math.PI*.49;
+controls.target.set(0,0,0);
+
+const hemi=new THREE.HemisphereLight(0xffffff,0x52683e,1.2);
+scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffffff,1.7);
+sun.position.set(-8,16,10);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-20;sun.shadow.camera.right=20;sun.shadow.camera.top=20;sun.shadow.camera.bottom=-20;
+scene.add(sun);
+
+const world=new THREE.Group();
+scene.add(world);
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2();
+const clickable=[];
+
+function mat(color,rough=.72,metal=.02){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal})}
+function box(w,h,d,color){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.castShadow=true;m.receiveShadow=true;return m}
+function sphere(r,color){const m=new THREE.Mesh(new THREE.SphereGeometry(r,28,18),mat(color));m.castShadow=true;m.receiveShadow=true;return m}
+function cone(r,h,color,s=24){const m=new THREE.Mesh(new THREE.ConeGeometry(r,h,s),mat(color));m.castShadow=true;m.receiveShadow=true;return m}
+function cyl(r,h,color,s=24){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,s),mat(color));m.castShadow=true;m.receiveShadow=true;return m}
+
+function makeIsland(){
+ const g=new THREE.Group();
+ const grass=cyl(6.2,1.1,0x62bf4d,64);grass.scale.z=.88;grass.position.y=0;g.add(grass);
+ const soil=cyl(5.95,2.5,0x70401f,64);soil.scale.z=.88;soil.position.y=-1.75;g.add(soil);
+ const rock=cone(5.6,3.4,0x222222,64);rock.scale.z=.88;rock.position.y=-4.7;rock.rotation.x=Math.PI;g.add(rock);
+
+ // farm grid
+ for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+   const tile=box(1.05,.12,1.05,0x71421f);
+   tile.position.set(-1.65+c*1.12,.62,-1.65+r*1.12);
+   tile.userData={farm:true,r,c};
+   g.add(tile);clickable.push(tile);
+ }
+
+ // house
+ const house=new THREE.Group();
+ const body=box(1.7,1.25,1.5,0xc98b43);body.position.y=1.25;house.add(body);
+ const roof=cone(1.45,1.1,0xf0c34d,4);roof.rotation.y=Math.PI/4;roof.position.y=2.35;house.add(roof);
+ const door=box(.55,.78,.08,0x3b2416);door.position.set(0,1.0,.79);house.add(door);
+ house.position.set(2.7,0,-1.1);g.add(house);
+
+ // trees
+ [[-4,1.2],[4,1.5],[-3.8,-3.1],[4,-3],[3.8,3.1],[-4,3]].forEach(([x,z],i)=>{
+   const t=new THREE.Group();const trunk=cyl(.18,1.2,0x8b542a);trunk.position.y=1.15;t.add(trunk);
+   const crown=i%2?sphere(.75,0x31a64b):cone(.8,1.7,0x278b45,18);crown.position.y=2.1;t.add(crown);t.position.set(x,.3,z);g.add(t);
+ });
+
+ // flowers/rocks
+ for(let i=0;i<28;i++){
+   const p=sphere(.06,[0xff6d8a,0xffd65a,0x8c6dff][i%3]);
+   const a=Math.random()*Math.PI*2,rad=3.7+Math.random()*1.6;
+   p.position.set(Math.cos(a)*rad,.68,Math.sin(a)*rad*.86);g.add(p);
+ }
+ world.add(g);
+}
+function makeCloud(x,y,z,s=1){
+ const g=new THREE.Group();
+ for(const [dx,dy,dz,r] of [[0,0,0,.8],[.65,.1,0,.65],[-.65,.08,0,.6],[.15,.35,0,.55]]){
+   const p=sphere(r,0xffffff);p.material.transparent=true;p.material.opacity=.92;p.position.set(dx,dy,dz);g.add(p);
+ }
+ g.position.set(x,y,z);g.scale.setScalar(s);scene.add(g);return g;
+}
+const clouds=[makeCloud(-9,6,-6,1.5),makeCloud(10,7,-10,1.2),makeCloud(7,5,5,1.4)];
+
+function makeHero(h){
+ const g=new THREE.Group();
+ const skin=h.type==='dog'?0xd79b66:h.type==='cat'?0x9aa1aa:h.type==='duck'?0xfff1c7:0xf0c28c;
+ const body=sphere(.3,h.color);body.scale.set(1,.95,.8);body.position.y=.58;g.add(body);
+ const head=sphere(.39,skin);head.position.y=1.1;g.add(head);
+ for(const x of[-.12,.12]){const eye=sphere(.045,0x111111);eye.position.set(x,1.15,.34);g.add(eye)}
+ for(const x of[-.16,.16]){const leg=cyl(.055,.32,0x493020);leg.position.set(x,.25,0);g.add(leg);const foot=box(.18,.11,.26,0x493020);foot.position.set(x,.05,.1);g.add(foot)}
+ if(h.type==='dog'){for(const x of[-.28,.28]){const ear=cone(.12,.38,0x8a5a37);ear.position.set(x,1.38,0);ear.rotation.z=x<0?.55:-.55;g.add(ear)}}
+ if(h.type==='cat'){for(const x of[-.25,.25]){const ear=cone(.11,.32,0x7d838c);ear.position.set(x,1.4,0);ear.rotation.z=x<0?.45:-.45;g.add(ear)}const hat=cone(.3,.7,0x273898);hat.position.y=1.65;g.add(hat)}
+ if(h.type==='duck'){const beak=box(.24,.1,.2,0xff8d24);beak.position.set(0,1.08,.41);g.add(beak)}
+ if(h.type==='archer'){const bow=new THREE.Mesh(new THREE.TorusGeometry(.28,.022,8,28,Math.PI*1.4),mat(0x6b3d19));bow.position.set(.4,.72,.13);bow.rotation.x=Math.PI/2;bow.rotation.z=.45;g.add(bow)}
+ if(h.type==='knight'){const sh=box(.38,.52,.1,0x2a69c7);sh.position.set(.4,.6,.13);g.add(sh)}
+ if(h.type==='boy'||h.type==='sword'){const sw=box(.06,.74,.06,0xddefff);sw.position.set(.4,.72,.12);sw.rotation.z=-.35;g.add(sw)}
+ return g;
+}
+function makeEnemy(){
+ const g=new THREE.Group();const body=sphere(.33,0x77ad68);body.position.y=.58;g.add(body);const head=sphere(.36,0x83b873);head.position.y=1.05;g.add(head);
+ for(const x of[-.12,.12]){const eye=sphere(.045,0xffffff);eye.position.set(x,1.08,.31);g.add(eye)}
+ return g;
+}
+
+makeIsland();
+
+function renderCards(){
+ bottom.innerHTML='';
+ heroes.forEach(h=>{
+  const b=document.createElement('button');b.className='card '+(selected===h.id?'active':'');
+  b.innerHTML=`<div class="emoji">${h.emoji}</div><div class="name">${h.name}</div><div class="cost">☀️ ${h.cost}</div>`;
+  b.onclick=()=>{selected=h.id;renderCards()};bottom.appendChild(b);
+ });
+}
+renderCards();
+
+function updateUI(){document.getElementById('energy').textContent=energy;document.getElementById('coins').textContent=coins}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',1300)}
+
+renderer.domElement.addEventListener('pointerdown',ev=>{
+ const rect=renderer.domElement.getBoundingClientRect();
+ pointer.x=((ev.clientX-rect.left)/rect.width)*2-1;pointer.y=-((ev.clientY-rect.top)/rect.height)*2+1;
+ raycaster.setFromCamera(pointer,camera);
+ const hit=raycaster.intersectObjects(clickable,false)[0];
+ if(!hit)return;
+ const h=heroes.find(x=>x.id===selected);
+ if(energy<h.cost){toast('พลังงานไม่พอ');navigator.vibrate&&navigator.vibrate(30);return}
+ if(hit.object.userData.occupied){toast('ช่องนี้มีตัวละครแล้ว');return}
+ energy-=h.cost;hit.object.userData.occupied=true;
+ const hero=makeHero(h);hero.position.copy(hit.object.position);hero.position.y=.72;hero.scale.setScalar(.9);world.add(hero);placed.push(hero);
+ navigator.vibrate&&navigator.vibrate(20);updateUI();
+});
+
+window.resetView=()=>{camera.position.set(12,11,16);controls.target.set(0,0,0);controls.update()}
+window.toggleDay=()=>{night=!night;scene.background.set(night?0x14213f:0x9fe5ff);scene.fog.color.set(night?0x14213f:0x9fe5ff);sun.intensity=night?.45:1.7;hemi.intensity=night?.6:1.2}
+window.toggleRain=()=>{raining=!raining;toast(raining?'เริ่มฝนตก':'หยุดฝน')}
+window.zoomIn=()=>{camera.position.multiplyScalar(.88)}
+window.zoomOut=()=>{camera.position.multiplyScalar(1.12)}
+window.toggleAutoRotate=()=>{autoRotate=!autoRotate;controls.autoRotate=autoRotate;controls.autoRotateSpeed=.7}
+window.startBattle=()=>{
+ toast('เริ่มด่านทดลอง');
+ for(let i=0;i<5;i++){const e=makeEnemy();e.position.set(4.6+i*.55,.7,-2+i);world.add(e);e.userData.enemy=true}
+}
+
+const rainGeo=new THREE.BufferGeometry();
+const rainCount=800, rainPos=new Float32Array(rainCount*3);
+for(let i=0;i<rainCount;i++){rainPos[i*3]=(Math.random()-.5)*28;rainPos[i*3+1]=Math.random()*18;rainPos[i*3+2]=(Math.random()-.5)*28}
+rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));
+const rainMat=new THREE.PointsMaterial({color:0xbdefff,size:.045,transparent:true,opacity:.75});
+const rain=new THREE.Points(rainGeo,rainMat);scene.add(rain);rain.visible=false;
+
+let last=0;
+function animate(t){
+ requestAnimationFrame(animate);
+ const dt=Math.min(.05,(t-last)/1000||0);last=t;
+ controls.update();
+ placed.forEach((p,i)=>{p.position.y=.72+Math.sin(t*.004+i)*.05;p.rotation.y=Math.sin(t*.002+i)*.08});
+ clouds.forEach((c,i)=>{c.position.x+=dt*(.12+i*.03);if(c.position.x>15)c.position.x=-15});
+ rain.visible=raining;
+ if(raining){
+   const a=rain.geometry.attributes.position.array;
+   for(let i=0;i<rainCount;i++){a[i*3+1]-=dt*10;if(a[i*3+1]<0)a[i*3+1]=18}
+   rain.geometry.attributes.position.needsUpdate=true;
+ }
+ renderer.render(scene,camera);
+}
+updateUI();requestAnimationFrame(animate);
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body>
+</html>
